@@ -13,7 +13,16 @@ export const productsApiSlice = apiSlice.injectEndpoints({
       providesTags: ['Products'],
     }),
 
-    // NEW: Get categories with counts
+    // NEW: Get ALL products for Admin (No pagination limit)
+    getAdminProducts: builder.query({
+      query: () => ({
+        url: `${PRODUCTS_URL}/admin`,
+      }),
+      keepUnusedDataFor: 5,
+      providesTags: ['Products'],
+    }),
+
+    // Get categories with counts
     getCategoryList: builder.query({
       query: () => ({
         url: `${PRODUCTS_URL}/categories`,
@@ -86,7 +95,8 @@ export const productsApiSlice = apiSlice.injectEndpoints({
 
 export const {
   useGetProductsQuery,
-  useGetCategoryListQuery, // EXPORTED NEW HOOK
+  useGetAdminProductsQuery, // EXPORTED NEW ADMIN HOOK
+  useGetCategoryListQuery,
   useGetLowStockProductsQuery,
   useGetProductDetailsQuery,
   useCreateProductMutation,

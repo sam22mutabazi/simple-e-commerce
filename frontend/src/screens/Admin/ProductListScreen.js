@@ -1,17 +1,16 @@
 import React from 'react';
 import { Table, Button, Row, Col, Spinner } from 'react-bootstrap';
 import { LinkContainer } from 'react-router-bootstrap';
-import { useParams } from 'react-router-dom';
 import { 
-    useGetProductsQuery, 
+    useGetAdminProductsQuery, 
     useCreateProductMutation, 
     useDeleteProductMutation 
 } from '../../slices/productsApiSlice';
 import { toast } from 'react-toastify';
 
 const ProductListScreen = () => {
-  const { pageNumber } = useParams();
-  const { data, isLoading, error, refetch } = useGetProductsQuery({ pageNumber: pageNumber || 1 });
+  // Fetching ALL products using the new admin-specific query
+  const { data: products, isLoading, error, refetch } = useGetAdminProductsQuery();
 
   const [createProduct, { isLoading: loadingCreate }] = useCreateProductMutation();
   const [deleteProduct, { isLoading: loadingDelete }] = useDeleteProductMutation();
@@ -43,7 +42,9 @@ const ProductListScreen = () => {
   return (
     <>
       <Row className='align-items-center'>
-        <Col><h1>Inventory Management</h1></Col>
+        <Col>
+          <h1>Inventory Management ({products ? products.length : 0})</h1>
+        </Col>
         <Col className='text-end'>
           <Button className='my-3 btn-primary' onClick={createProductHandler} disabled={loadingCreate}>
             <i className='fas fa-plus'></i> Add Product
@@ -53,8 +54,10 @@ const ProductListScreen = () => {
 
       {(loadingCreate || loadingDelete) && <Spinner animation="border" className='d-block mx-auto my-2' />}
 
-      {isLoading ? <Spinner animation="border" /> : error ? (
-        <div className='alert alert-danger'>{error.data?.message}</div>
+      {isLoading ? (
+        <Spinner animation="border" className='d-block mx-auto' />
+      ) : error ? (
+        <div className='alert alert-danger'>{error.data?.message || 'Error loading inventory'}</div>
       ) : (
         <Table striped hover responsive className='table-sm shadow-sm'>
           <thead className='bg-light'>
@@ -67,7 +70,8 @@ const ProductListScreen = () => {
             </tr>
           </thead>
           <tbody>
-            {(data.products || data)?.map((product) => (
+            {/* Maps directly over the array returned by the admin endpoint */}
+            {products?.map((product) => (
               <tr key={product._id}>
                 <td><strong>{product.name}</strong></td>
                 <td>RWF {product.price.toLocaleString()}</td>
