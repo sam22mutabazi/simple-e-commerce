@@ -21,12 +21,8 @@
       "destination": "backend/server.js" 
     },
     { 
-      "source": "/static/(.*)", 
-      "destination": "/frontend/static/$1" 
-    },
-    { 
-      "source": "/((?!api|static|.*\\..*).*)", 
-      "destination": "/frontend/index.html" 
+      "source": "/((?!api|uploads|static|.*\\..*).*)", 
+      "destination": "/index.html" 
     }
   ]
 }
