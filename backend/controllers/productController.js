@@ -2,7 +2,6 @@ import asyncHandler from 'express-async-handler';
 import Product from '../models/ProductModel.js';
 
 // @desc    Get all unique categories with product counts
-// @route   GET /api/products/categories
 export const getCategories = asyncHandler(async (req, res) => {
   const categories = await Product.aggregate([
     {
@@ -24,9 +23,8 @@ export const getCategories = asyncHandler(async (req, res) => {
 });
 
 // @desc    Fetch all products (Includes Keyword Search and Category Filter)
-// @route   GET /api/products
 export const getProducts = asyncHandler(async (req, res) => {
-  const pageSize = 9; // Fixed for 3x3 grid
+  const pageSize = 9; 
   const page = Number(req.query.pageNumber) || 1;
 
   const keyword = req.query.keyword
@@ -48,7 +46,7 @@ export const getProducts = asyncHandler(async (req, res) => {
   res.json({ products, page, pages: Math.ceil(count / pageSize) });
 });
 
-// @desc    Get products with low stock for Admin Dashboard
+// @desc    Get products with low stock
 export const getLowStockProducts = asyncHandler(async (req, res) => {
   const threshold = 5;
   const products = await Product.find({ countInStock: { $lte: threshold } });
@@ -72,7 +70,8 @@ export const createProduct = asyncHandler(async (req, res) => {
     name: 'Sample Name',
     price: 0,
     user: req.user._id,
-    image: '/images/sample.jpg',
+    // Note: If using built-in images, move them to frontend/public/images
+    image: '/images/sample.jpg', 
     brand: 'Sample Brand',
     category: 'Sample Category',
     countInStock: 0,
