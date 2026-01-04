@@ -12,10 +12,9 @@
     }
   ],
   "rewrites": [
-    {
-      "source": "/api/(.*)",
-      "destination": "backend/server.js"
-    },
+    
+      { "source": "/api/(.*)", "destination": "backend/server.js" },
+      { "source": "/((?!api|static|.*\\..*).*)", "destination": "/index.html" },
     {
       "source": "/uploads/(.*)",
       "destination": "backend/server.js"
