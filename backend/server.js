@@ -1,5 +1,5 @@
 import path from 'path'; 
-import { fileURLToPath } from 'url'; // Required for ES Module __dirname
+import { fileURLToPath } from 'url'; 
 import 'dotenv/config'; 
 import express from 'express';
 import cookieParser from 'cookie-parser'; 
@@ -13,7 +13,7 @@ import uploadRoutes from './routes/uploadRoutes.js';
 
 import { notFound, errorHandler } from './middleware/errorMiddleware.js'; 
 
-// Fix for __dirname in ES Modules
+// ES Modules __dirname fix
 const __filename = fileURLToPath(import.meta.url);
 const __dirname = path.dirname(__filename);
 
@@ -34,8 +34,10 @@ app.use('/api/users', userRoutes);
 app.use('/api/orders', orderRoutes);
 app.use('/api/upload', uploadRoutes); 
 
-// Serving Static Uploads
-app.use('/uploads', express.static(path.join(__dirname, 'uploads')));
+// --- SERVING STATIC UPLOADS (Fix for Vercel) ---
+// Using process.cwd() ensures we look at the project root for the uploads folder
+const uploadsPath = path.resolve(process.cwd(), 'uploads');
+app.use('/uploads', express.static(uploadsPath));
 
 // Health Check / Root Route
 app.get("/", (req, res) => {
@@ -47,6 +49,7 @@ app.use(notFound);
 app.use(errorHandler);
 
 // --- VERCEL SPECIFIC EXPORT ---
+// Required for Vercel to treat this as a single Serverless Function
 export default app;
 
 // Local Development Server
