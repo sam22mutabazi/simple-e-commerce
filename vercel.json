@@ -17,15 +17,11 @@
       "destination": "backend/server.js" 
     },
     { 
-      "source": "/uploads/(.*)", 
-      "destination": "backend/server.js" 
-    },
-    { 
       "source": "/static/(.*)", 
       "destination": "/frontend/static/$1" 
     },
     { 
-      "source": "/((?!api|uploads|static|.*\\..*).*)", 
+      "source": "/((?!api|static|.*\\..*).*)", 
       "destination": "/frontend/index.html" 
     }
   ]

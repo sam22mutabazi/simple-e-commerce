@@ -34,11 +34,6 @@ app.use('/api/users', userRoutes);
 app.use('/api/orders', orderRoutes);
 app.use('/api/upload', uploadRoutes); 
 
-// --- SERVING STATIC UPLOADS (Fix for Vercel) ---
-// Using process.cwd() ensures we look at the project root for the uploads folder
-const uploadsPath = path.resolve(process.cwd(), 'uploads');
-app.use('/uploads', express.static(uploadsPath));
-
 // Health Check / Root Route
 app.get("/", (req, res) => {
   res.send("E-Commerce API is running and ready ✅");
@@ -49,7 +44,6 @@ app.use(notFound);
 app.use(errorHandler);
 
 // --- VERCEL SPECIFIC EXPORT ---
-// Required for Vercel to treat this as a single Serverless Function
 export default app;
 
 // Local Development Server
