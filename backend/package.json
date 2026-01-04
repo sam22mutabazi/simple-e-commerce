@@ -1,33 +1,27 @@
 {
   "$schema": "https://json.schemastore.org/package.json",
-  "name": "simple-e-commerce",
+  "name": "simple-e-commerce-backend",
   "version": "1.0.0",
-  "description": "A basic e-commerce store built with Node.js and Express.js",
+  "description": "Backend for simple-e-commerce",
   "main": "server.js",
   "type": "module",
   "scripts": {
     "start": "node server.js",
     "server": "nodemon server.js",
-    "client": "npm start --prefix frontend",
-    "dev": "concurrently \"npm run server\" \"npm run client\"",
-    "data:import": "node src/seeder.js",
-    "data:destroy": "node src/seeder.js -d",
-    "build": "npm install && npm install --prefix frontend --production=false && npm run build --prefix frontend"
+    "data:import": "node seeder.js", 
+    "data:destroy": "node seeder.js -d"
   },
   "keywords": [
     "ecommerce",
     "express",
-    "mongodb",
-    "rwanda"
+    "mongodb"
   ],
   "author": "",
   "license": "ISC",
   "dependencies": {
     "bcryptjs": "^2.4.3",
     "cloudinary": "^2.8.0",
-    "concurrently": "^8.2.2",
     "cookie-parser": "^1.4.7",
-    "cross-env": "^7.0.3",
     "dotenv": "^16.4.5",
     "express": "^4.19.2",
     "express-async-handler": "^1.2.0",
@@ -36,7 +30,8 @@
     "jsonwebtoken": "^9.0.3",
     "mongoose": "^8.3.2",
     "multer": "^1.4.5",
-    "nodemailer": "^6.9.13"
+    "nodemailer": "^6.9.13",
+    "cors": "^2.8.5"
   },
   "devDependencies": {
     "nodemon": "^3.1.0"

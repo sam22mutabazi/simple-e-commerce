@@ -2,21 +2,23 @@ import path from 'path';
 import 'dotenv/config'; 
 import express from 'express';
 import cookieParser from 'cookie-parser'; 
-import connectDB from './src/config/db.js'; 
+import cors from 'cors'; // Added CORS
+import connectDB from './config/db.js'; // Removed 'src/'
 
-import productRoutes from './src/routes/productRoutes.js'; 
-import userRoutes from './src/routes/userRoutes.js'; 
-import orderRoutes from './src/routes/orderRoutes.js'; 
-import uploadRoutes from './src/routes/uploadRoutes.js'; 
+import productRoutes from './routes/productRoutes.js'; // Removed 'src/'
+import userRoutes from './routes/userRoutes.js'; // Removed 'src/'
+import orderRoutes from './routes/orderRoutes.js'; // Removed 'src/'
+import uploadRoutes from './routes/uploadRoutes.js'; // Removed 'src/'
 
-import { notFound, errorHandler } from './src/middleware/errorMiddleware.js'; 
+import { notFound, errorHandler } from './middleware/errorMiddleware.js'; // Removed 'src/'
 
 // Connect to MongoDB
 connectDB();    
 
 const app = express();
 
-// Body Parser Middleware
+// Middleware
+app.use(cors()); // Enable CORS so frontend can connect
 app.use(express.json()); 
 app.use(express.urlencoded({ extended: true }));
 app.use(cookieParser()); 
@@ -29,34 +31,23 @@ app.use('/api/upload', uploadRoutes);
 
 const __dirname = path.resolve(); 
 
-// --- STATIC FILES CONFIG ---
-// Note: Vercel is read-only. Uploaded files won't persist unless you use Cloudinary,
-// but this allows you to serve existing files in your folder.
+// Serving Static Uploads
 app.use('/uploads', express.static(path.join(__dirname, '/uploads')));
 
-// Serving Frontend
-if (process.env.NODE_ENV === 'production') {
-  // Point to the built frontend files
-  app.use(express.static(path.join(__dirname, '/frontend/build')));
-
-  app.get('*', (req, res) =>
-    res.sendFile(path.resolve(__dirname, 'frontend', 'build', 'index.html'))
-  );
-} else {
-  app.get("/", (req, res) => {
-    res.send("E-Commerce API is running and ready ✅");
-  });
-}
+// Note: For Vercel Monorepo, Vercel handles serving the frontend 
+// via the 'rewrites' in vercel.json. We only need a simple root route here.
+app.get("/", (req, res) => {
+  res.send("E-Commerce API is running and ready ✅");
+});
 
 // Error Middleware
 app.use(notFound);
 app.use(errorHandler);
 
 // --- VERCEL SPECIFIC EXPORT ---
-// This is the most important part for Vercel!
 export default app;
 
-// Only start the server listener if we are NOT on Vercel (Local Dev)
+// Local Development Server
 if (process.env.NODE_ENV !== 'production') {
     const PORT = process.env.PORT || 5000; 
     app.listen(PORT, () => {
