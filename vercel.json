@@ -12,8 +12,21 @@
     }
   ],
   "rewrites": [
-    { "source": "/api/(.*)", "destination": "backend/server.js" },
-    { "source": "/uploads/(.*)", "destination": "backend/server.js" },
-    { "source": "/((?!api|static|.*\\..*).*)", "destination": "/frontend/index.html" }
+    { 
+      "source": "/api/(.*)", 
+      "destination": "backend/server.js" 
+    },
+    { 
+      "source": "/uploads/(.*)", 
+      "destination": "backend/server.js" 
+    },
+    { 
+      "source": "/static/(.*)", 
+      "destination": "/frontend/static/$1" 
+    },
+    { 
+      "source": "/((?!api|static|.*\\..*).*)", 
+      "destination": "/frontend/index.html" 
+    }
   ]
 }

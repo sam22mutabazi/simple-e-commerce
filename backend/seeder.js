@@ -3,7 +3,7 @@ import dotenv from 'dotenv';
 import users from './data/users.js';         // Matches your new users path
 import products from './data/products.js';   // Matches your products path
 import User from './models/UserModel.js';
-import Product from './models/productModel.js'; 
+import Product from './models/ProductModel.js'; 
 import connectDB from './config/db.js';
 
 dotenv.config();
