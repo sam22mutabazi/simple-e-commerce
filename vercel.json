@@ -17,8 +17,12 @@
       "destination": "backend/server.js"
     },
     {
+      "source": "/uploads/(.*)",
+      "destination": "backend/server.js"
+    },
+    {
       "source": "/(.*)",
-      "destination": "/frontend/index.html" 
+      "destination": "/frontend/index.html"
     }
   ]
 }
