@@ -1,10 +1,10 @@
 import mongoose from 'mongoose';
 import dotenv from 'dotenv';         
-import users from './src/data/users.js';         // Matches your new users path
-import products from './src/data/products.js';   // Matches your products path
-import User from './src/models/UserModel.js';
-import Product from './src/models/productModel.js'; 
-import connectDB from './src/config/db.js';
+import users from './data/users.js';         // Matches your new users path
+import products from './data/products.js';   // Matches your products path
+import User from './models/UserModel.js';
+import Product from './models/productModel.js'; 
+import connectDB from './config/db.js';
 
 dotenv.config();
 

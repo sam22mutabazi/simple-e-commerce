@@ -1,16 +1,21 @@
 import path from 'path'; 
+import { fileURLToPath } from 'url'; // Required for ES Module __dirname
 import 'dotenv/config'; 
 import express from 'express';
 import cookieParser from 'cookie-parser'; 
-import cors from 'cors'; // Added CORS
-import connectDB from './config/db.js'; // Removed 'src/'
+import cors from 'cors'; 
+import connectDB from './config/db.js'; 
 
-import productRoutes from './routes/productRoutes.js'; // Removed 'src/'
-import userRoutes from './routes/userRoutes.js'; // Removed 'src/'
-import orderRoutes from './routes/orderRoutes.js'; // Removed 'src/'
-import uploadRoutes from './routes/uploadRoutes.js'; // Removed 'src/'
+import productRoutes from './routes/productRoutes.js'; 
+import userRoutes from './routes/userRoutes.js'; 
+import orderRoutes from './routes/orderRoutes.js'; 
+import uploadRoutes from './routes/uploadRoutes.js'; 
 
-import { notFound, errorHandler } from './middleware/errorMiddleware.js'; // Removed 'src/'
+import { notFound, errorHandler } from './middleware/errorMiddleware.js'; 
+
+// Fix for __dirname in ES Modules
+const __filename = fileURLToPath(import.meta.url);
+const __dirname = path.dirname(__filename);
 
 // Connect to MongoDB
 connectDB();    
@@ -18,7 +23,7 @@ connectDB();
 const app = express();
 
 // Middleware
-app.use(cors()); // Enable CORS so frontend can connect
+app.use(cors()); 
 app.use(express.json()); 
 app.use(express.urlencoded({ extended: true }));
 app.use(cookieParser()); 
@@ -29,13 +34,10 @@ app.use('/api/users', userRoutes);
 app.use('/api/orders', orderRoutes);
 app.use('/api/upload', uploadRoutes); 
 
-const __dirname = path.resolve(); 
-
 // Serving Static Uploads
-app.use('/uploads', express.static(path.join(__dirname, '/uploads')));
+app.use('/uploads', express.static(path.join(__dirname, 'uploads')));
 
-// Note: For Vercel Monorepo, Vercel handles serving the frontend 
-// via the 'rewrites' in vercel.json. We only need a simple root route here.
+// Health Check / Root Route
 app.get("/", (req, res) => {
   res.send("E-Commerce API is running and ready ✅");
 });
