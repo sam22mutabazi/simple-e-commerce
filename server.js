@@ -29,12 +29,14 @@ app.use('/api/upload', uploadRoutes);
 
 const __dirname = path.resolve(); 
 
-// --- CRITICAL ADDITION FOR IMAGE UPLOADS ---
-// This makes the 'uploads' folder accessible to the browser
+// --- STATIC FILES CONFIG ---
+// Note: Vercel is read-only. Uploaded files won't persist unless you use Cloudinary,
+// but this allows you to serve existing files in your folder.
 app.use('/uploads', express.static(path.join(__dirname, '/uploads')));
 
-// Serving Frontend in Production
+// Serving Frontend
 if (process.env.NODE_ENV === 'production') {
+  // Point to the built frontend files
   app.use(express.static(path.join(__dirname, '/frontend/build')));
 
   app.get('*', (req, res) =>
@@ -46,10 +48,18 @@ if (process.env.NODE_ENV === 'production') {
   });
 }
 
+// Error Middleware
 app.use(notFound);
 app.use(errorHandler);
 
-const PORT = process.env.PORT || 5000; 
-app.listen(PORT, () => {
-  console.log(`Server running in ${process.env.NODE_ENV || 'development'} mode on port ${PORT}`);
-});
+// --- VERCEL SPECIFIC EXPORT ---
+// This is the most important part for Vercel!
+export default app;
+
+// Only start the server listener if we are NOT on Vercel (Local Dev)
+if (process.env.NODE_ENV !== 'production') {
+    const PORT = process.env.PORT || 5000; 
+    app.listen(PORT, () => {
+      console.log(`Server running in development mode on port ${PORT}`);
+    });
+}
