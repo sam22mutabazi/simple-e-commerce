@@ -8,7 +8,8 @@ import {
     deleteProduct,
     createProductReview,
     getLowStockProducts,
-    getCategories // 1. IMPORTED
+    getCategories,
+    getAdminProducts // IMPORTED NEW CONTROLLER
 } from '../controllers/productController.js';
 
 import { protect, admin } from '../middleware/authMiddleware.js';
@@ -18,7 +19,10 @@ router.route('/')
     .get(getProducts)
     .post(protect, admin, createProduct); 
 
-// 2. CATEGORIES ROUTE (MUST BE ABOVE /:id)
+// Admin inventory route (GET ALL PRODUCTS)
+router.route('/admin').get(protect, admin, getAdminProducts);
+
+// Categories route
 router.route('/categories').get(getCategories);
 
 // Low stock route

@@ -22,7 +22,7 @@ export const getCategories = asyncHandler(async (req, res) => {
   res.json(categories);
 });
 
-// @desc    Fetch all products (Includes Keyword Search and Category Filter)
+// @desc    Fetch all products (Paginated for Home Screen)
 export const getProducts = asyncHandler(async (req, res) => {
   const pageSize = 9; 
   const page = Number(req.query.pageNumber) || 1;
@@ -44,6 +44,12 @@ export const getProducts = asyncHandler(async (req, res) => {
     .sort({ createdAt: -1 });
 
   res.json({ products, page, pages: Math.ceil(count / pageSize) });
+});
+
+// @desc    Get all products for Admin Inventory (No Pagination)
+export const getAdminProducts = asyncHandler(async (req, res) => {
+  const products = await Product.find({}).sort({ createdAt: -1 });
+  res.json(products); // Returns all products regardless of count
 });
 
 // @desc    Get products with low stock
@@ -70,7 +76,6 @@ export const createProduct = asyncHandler(async (req, res) => {
     name: 'Sample Name',
     price: 0,
     user: req.user._id,
-    // Note: If using built-in images, move them to frontend/public/images
     image: '/images/sample.jpg', 
     brand: 'Sample Brand',
     category: 'Sample Category',
