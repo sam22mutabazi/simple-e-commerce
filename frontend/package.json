@@ -27,7 +27,7 @@
     "react-toastify": "^10.0.6",
     "recharts": "^2.15.0",
     "web-vitals": "^2.1.4",
-    "xlsx": "^0.18.5"
+    "xlsx": "^0.18.11"
   },
   "scripts": {
     "start": "react-scripts start",
