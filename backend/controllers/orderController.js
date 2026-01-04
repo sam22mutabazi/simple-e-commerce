@@ -1,6 +1,6 @@
 import asyncHandler from 'express-async-handler';
-import Order from '../models/orderModel.js';
-import Product from '../models/productModel.js';
+import Order from '../models/OrderModel.js';
+import Product from '../models/ProductModel.js';
 import User from '../models/UserModel.js';
 import Flutterwave from 'flutterwave-node-v3';
 

@@ -1,5 +1,5 @@
 import asyncHandler from 'express-async-handler';
-import Product from '../models/productModel.js';
+import Product from '../models/ProductModel.js';
 
 // @desc    Get all unique categories with product counts
 // @route   GET /api/products/categories
