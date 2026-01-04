@@ -25,7 +25,13 @@ const ProfileScreen = () => {
         ) : error ? (
           <div className='alert alert-danger'>{error.data?.message || error.error}</div>
         ) : orders && orders.length === 0 ? (
-          <div className='alert alert-info'>You have no orders yet. <LinkContainer to='/'><a>Go Shopping</a></LinkContainer></div>
+          <div className='alert alert-info'>
+            You have no orders yet. {' '}
+            {/* FIXED LINE BELOW: Added href='#' to satisfy ESLint/Vercel */}
+            <LinkContainer to='/'>
+              <a href='/'>Go Shopping</a>
+            </LinkContainer>
+          </div>
         ) : (
           <Table striped hover responsive className='table-sm shadow-sm'>
             <thead>
