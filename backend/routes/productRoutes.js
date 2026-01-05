@@ -9,29 +9,20 @@ import {
     createProductReview,
     getLowStockProducts,
     getCategories,
-    getAdminProducts // IMPORTED NEW CONTROLLER
+    getAdminProducts 
 } from '../controllers/productController.js';
 
 import { protect, admin } from '../middleware/authMiddleware.js';
 
-// Base route
-router.route('/')
-    .get(getProducts)
-    .post(protect, admin, createProduct); 
-
-// Admin inventory route (GET ALL PRODUCTS)
+// 1. Static/Specific Routes (Must come first!)
+router.route('/').get(getProducts).post(protect, admin, createProduct); 
 router.route('/admin').get(protect, admin, getAdminProducts);
-
-// Categories route
 router.route('/categories').get(getCategories);
-
-// Low stock route
 router.route('/lowstock').get(protect, admin, getLowStockProducts);
 
-// Review route
+// 2. Dynamic Routes (Must come last)
 router.route('/:id/reviews').post(protect, createProductReview);
 
-// ID-based routes
 router.route('/:id')
     .get(getProductById)
     .put(protect, admin, updateProduct)
